@@ -44,18 +44,9 @@ class NoPaddingUnitStrides(Scene):
                     if i < height or i >= len(input_squares)+height or j < width or j >= len(input_squares)+width:
                         current_row += Square(side_length=size,color=ORANGE).next_to(current_row[j-1], RIGHT*padding)
                     else: 
-                        current_row += Square(side_length=size,color=WHITE).next_to(current_row[j-1], RIGHT*padding)
+                        current_row += Square(side_length=size, color=WHITE).next_to(current_row[j-1], RIGHT*padding)
             total_squares += [current_row]
         return total_squares
-
-                # if i == 0 and j == 0:
-                #     current_row += Square(side_length=size,color=ORANGE).next_to(input_squares[0][0], UP*0.75*height, LEFT*0.75*width)
-                # elif i < height or i >= len(input_squares)+height:
-                #     current_row += Square(side_length=size,color=ORANGE).next_to(total_squares[i-1][0], DOWN*padding)
-                # elif j < width or j >= len(input_squares)+width:
-                #     current_row += Square(side_length=size,color=ORANGE).next_to(current_row[j-1], RIGHT*padding)
-                # else:
-                #     current_row += Square(side_length=size,color=c).next_to(current_row[j-1], RIGHT*padding)
    
     def construct(self):
         # regular convolution labels
@@ -98,11 +89,14 @@ class NoPaddingUnitStrides(Scene):
         self.wait()
 
         #prepare screen for transposed
-        self.play(FadeOut(label_group))
-        self.play(ApplyMethod(output_squares_group.shift, LEFT*2))
+        self.play(ApplyMethod(label_group.scale, 0.6), ApplyMethod(input_squares_group.scale, 0.6), 
+            ApplyMethod(kernel_squares_group.scale, 0.6), ApplyMethod(output_squares_group.scale, 0.6))
+
+        self.play(ApplyMethod(label_group.shift, LEFT*4.1, UP*0.8), ApplyMethod(input_squares_group.shift, LEFT*0.7, DOWN*1.8), 
+            ApplyMethod(kernel_squares_group.shift, LEFT*1, DOWN*1.5), ApplyMethod(output_squares_group.shift, LEFT*2.7, DOWN))
 
         # transposed convolution labels
-        input_text_trans = Text("Input: 3x3").shift(UP*3.5, LEFT*0.3).scale(0.7)
+        input_text_trans = Text("Input: 3x3").shift(UP*3.5, LEFT*1.3).scale(0.7)
         padding_text_trans_1 = Text("Padding: Kernel - 1").next_to(input_text_trans,DOWN).scale(0.7)
         padding_text_trans_2 = Text("Padding: 3 - 1 x 3 - 1").next_to(input_text_trans,DOWN).scale(0.7)
         padding_text_trans_3 = Text("Padding: 2x2").next_to(input_text_trans,DOWN).scale(0.7)
@@ -113,7 +107,7 @@ class NoPaddingUnitStrides(Scene):
         # transposed input, kernel, and output squares
         input_squares_trans = self.create_squares(3, 3, 0.5, 1, WHITE, 3.5, -3)
         kernel_squares_trans = self.create_squares(3, 3, 0.7, 0.2, BLUE, 3.5, -1.5)
-        output_squares_trans = self.create_squares(5, 5, 0.5, 1, PURPLE, -0.5, 2.5)
+        output_squares_trans = self.create_squares(5, 5, 0.5, 1, PURPLE, -0.5, 2.7)
         padding_squares_trans = self.create_padding(2, 2, input_squares_trans, 0.5, 1)
 
         # transposed input, kernel, and output groups
@@ -150,4 +144,4 @@ class NoPaddingUnitStrides(Scene):
 
         # display output result
         self.play(Write(output_text_trans))
-        self.wait()
+        self.wait(3)
