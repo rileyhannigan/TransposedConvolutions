@@ -28,24 +28,45 @@ class NoPaddingNonUnitStrides(Scene):
                     self.play(ApplyMethod(kernel_squares.shift, RIGHT*0.75*stride))
                 self.play(Create(output_squares[i][j]))
 
-    # creates padding 
-    def create_padding(self, height, width, input_squares, size, padding):
+    # creates outer padding 
+    def create_padding(self, height, width, input_length, size):
         total_squares = []
-        for i in range(len(input_squares)+(height*2)):
+        for i in range(input_length+(height*2)):
             current_row = []
-            for j in range(len(input_squares)+(width*2)):
+            for j in range(input_length+(width*2)):
                 if i == 0 and j == 0:
                     current_row += Square(side_length=size,color=ORANGE).shift(UP*3.0, LEFT*-1.5)
                 elif j == 0:
-                    if i < height or i >= len(input_squares)+height or j < width or j >= len(input_squares)+width:
-                        current_row += Square(side_length=size,color=ORANGE).next_to(total_squares[i-1][0], DOWN*padding)
+                    if i < height or i >= input_length+height or j < width or j >= input_length+width:
+                        current_row += Square(side_length=size,color=ORANGE).next_to(total_squares[i-1][0], DOWN)
                     else:
-                        current_row += Square(side_length=size).next_to(total_squares[i-1][0], DOWN*padding).set_opacity(0)
+                        current_row += Square(side_length=size).next_to(total_squares[i-1][0], DOWN).set_opacity(0)
                 else:
-                    if i < height or i >= len(input_squares)+height or j < width or j >= len(input_squares)+width:
-                        current_row += Square(side_length=size,color=ORANGE).next_to(current_row[j-1], RIGHT*padding)
+                    if i < height or i >= input_length+height or j < width or j >= input_length+width:
+                        current_row += Square(side_length=size,color=ORANGE).next_to(current_row[j-1], RIGHT)
                     else: 
-                        current_row += Square(side_length=size).next_to(current_row[j-1], RIGHT*padding).set_opacity(0)
+                        current_row += Square(side_length=size).next_to(current_row[j-1], RIGHT).set_opacity(0)
+            total_squares += [current_row]
+        return total_squares
+
+    # creates inner padding
+    def create_inner_padding(self, padding, input_squares, size):
+        total_squares = []
+        for i in range(len(input_squares)+padding):
+            current_row = []
+            for j in range(len(input_squares)+padding):
+                if i == 0 and j == 0:
+                    current_row += Square(side_length=size).shift(UP*2.355, LEFT*-2.645).set_opacity(0)
+                elif j == 0:
+                    if i % 2 != 0:
+                        current_row += Square(side_length=size,color=RED).next_to(total_squares[i-1][0], DOWN)
+                    else:
+                        current_row += Square(side_length=size).next_to(total_squares[i-1][0], DOWN).set_opacity(0)
+                else:
+                    if i % 2 != 0 or j % 2 != 0:
+                        current_row += Square(side_length=size,color=RED).next_to(current_row[j-1], RIGHT)
+                    else: 
+                        current_row += Square(side_length=size).next_to(current_row[j-1], RIGHT).set_opacity(0)
             total_squares += [current_row]
         return total_squares
 
@@ -101,3 +122,72 @@ class NoPaddingNonUnitStrides(Scene):
             ApplyMethod(output_squares_group.scale, 0.6))
         self.play(ApplyMethod(label_group.shift, LEFT*3.8, UP*0.6), ApplyMethod(input_squares_group.shift, LEFT*7.9, DOWN*1.6), 
             ApplyMethod(kernel_squares_group.shift, LEFT*7.9, DOWN*1.6), ApplyMethod(output_squares_group.shift, LEFT*3.8, DOWN*0.3))
+
+        # transposed convolution labels
+        title_trans = Text("No Padding, Non-Unit Strides").shift(RIGHT, UP*0.5)
+        title_trans1 = Text("Transposed Convolution").next_to(title_trans, DOWN)
+        input_text_trans = Text("Input: 2 x 2", color=PURPLE).shift(UP*3.1, LEFT*1.3).scale(0.7)
+        padding_text_trans_1 = Text("Padding: 0 x 0", color=ORANGE).next_to(input_text_trans,DOWN*0.35).scale(0.7)
+        padding_text_trans_2 = Text("p' = Kernel - 1", color=ORANGE).next_to(padding_text_trans_1,DOWN*0.35).scale(0.7)
+        padding_text_trans_3 = Text("p' = 2 - 1 x 2 - 1", color=ORANGE).next_to(padding_text_trans_1,DOWN*0.35).scale(0.7)
+        padding_text_trans_4 = Text("p' = 1 x 1", color=ORANGE).next_to(padding_text_trans_1,DOWN*0.35).scale(0.7)
+        kernel_text_trans = Text("Kernel: 2 x 2", color=BLUE).next_to(padding_text_trans_1,DOWN*0.35).scale(0.7)
+        stride_text_trans = Text("Stride: 1 x 1").next_to(kernel_text_trans,DOWN*0.35).scale(0.7)
+        output_text_trans = Text("Output: 4 x 4").next_to(stride_text_trans,DOWN*0.35).scale(0.7)
+
+        # transposed input, kernel, and output squares
+        input_squares_trans = self.create_squares(2, 2, 0.5, 1, PURPLE, 3, -3)
+        kernel_squares_trans = self.create_squares(2, 2, 0.7, 0.2, BLUE, 3, -1.5)
+        output_squares_trans = self.create_squares(4, 4, 0.5, 1, WHITE, 0, 2.7)
+        inner_padding_squares_trans = self.create_inner_padding(1, input_squares_trans, 0.5)
+        padding_squares_trans = self.create_padding(1, 1, len(input_squares_trans) + 1, 0.5)
+
+        # transposed input, kernel, and output groups
+        input_squares_group_trans = VGroup(*input_squares_trans[0], *input_squares_trans[1])
+        kernel_squares_group_trans = VGroup(*kernel_squares_trans[0], *kernel_squares_trans[1])
+        output_squares_group_trans = VGroup(*output_squares_trans[0], *output_squares_trans[1], *output_squares_trans[2],
+            *output_squares_trans[3])
+        inner_padding_squares_group_trans = VGroup(*inner_padding_squares_trans[0], *inner_padding_squares_trans[1], 
+            *inner_padding_squares_trans[2])
+        padding_squares_group_trans = VGroup(*padding_squares_trans[0], *padding_squares_trans[1], *padding_squares_trans[2],
+            *padding_squares_trans[3], *padding_squares_trans[4])
+
+        #display title
+        self.play(Write(title_trans), Write(title_trans1))
+        self.wait()
+        self.play(FadeOut(title_trans), FadeOut(title_trans1))
+
+        # display input
+        self.play(Write(input_text_trans)) 
+        self.play(Create(input_squares_group_trans))
+
+        # display inner padding
+        self.play(ApplyMethod(input_squares_group_trans.shift, DOWN))
+        self.play(ApplyMethod(input_squares_trans[0][0].shift, UP*0.375, LEFT*0.375), ApplyMethod(input_squares_trans[0][1].shift, UP*0.375, RIGHT*0.375),
+            ApplyMethod(input_squares_trans[1][0].shift, DOWN*0.375, LEFT*0.375), ApplyMethod(input_squares_trans[1][1].shift, DOWN*0.375, RIGHT*0.375))
+        self.play(Create(inner_padding_squares_group_trans))
+        self.wait(3)
+
+        # display padding
+        self.play(Write(padding_text_trans_1)) 
+        self.wait(0.5)
+        self.play(Write(padding_text_trans_2))
+        self.wait(0.5) 
+        self.play(Transform(padding_text_trans_2, padding_text_trans_3)) 
+        self.wait(0.5)
+        self.play(Transform(padding_text_trans_2, padding_text_trans_4)) 
+        self.wait(0.5)
+        self.play(Create(padding_squares_group_trans))
+        self.play(FadeOut(padding_text_trans_2))
+
+        # # display kernel
+        # self.play(Write(kernel_text_trans))
+        # self.play(Create(kernel_squares_group_trans))
+
+        # # display and do strides
+        # self.play(Write(stride_text_trans))
+        # self.do_convolution(output_squares_trans, kernel_squares_group_trans)
+
+        # # display output result
+        # self.play(Write(output_text_trans))
+        # self.wait(3)

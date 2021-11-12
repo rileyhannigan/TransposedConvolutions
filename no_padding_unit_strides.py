@@ -29,7 +29,7 @@ class NoPaddingUnitStrides(Scene):
                 self.play(Create(output_squares[i][j]))
 
     # creates padding 
-    def create_padding(self, height, width, input_squares, size, padding):
+    def create_padding(self, height, width, input_squares, size):
         total_squares = []
         for i in range(len(input_squares)+(height*2)):
             current_row = []
@@ -38,14 +38,14 @@ class NoPaddingUnitStrides(Scene):
                     current_row += Square(side_length=size,color=ORANGE).shift(UP*3.0, LEFT*-1.5)
                 elif j == 0:
                     if i < height or i >= len(input_squares)+height or j < width or j >= len(input_squares)+width:
-                        current_row += Square(side_length=size,color=ORANGE).next_to(total_squares[i-1][0], DOWN*padding)
+                        current_row += Square(side_length=size,color=ORANGE).next_to(total_squares[i-1][0], DOWN)
                     else:
-                        current_row += Square(side_length=size).next_to(total_squares[i-1][0], DOWN*padding).set_opacity(0)
+                        current_row += Square(side_length=size).next_to(total_squares[i-1][0], DOWN).set_opacity(0)
                 else:
                     if i < height or i >= len(input_squares)+height or j < width or j >= len(input_squares)+width:
-                        current_row += Square(side_length=size,color=ORANGE).next_to(current_row[j-1], RIGHT*padding)
+                        current_row += Square(side_length=size,color=ORANGE).next_to(current_row[j-1], RIGHT)
                     else: 
-                        current_row += Square(side_length=size).next_to(current_row[j-1], RIGHT*padding).set_opacity(0)
+                        current_row += Square(side_length=size).next_to(current_row[j-1], RIGHT).set_opacity(0)
             total_squares += [current_row]
         return total_squares
    
@@ -118,7 +118,7 @@ class NoPaddingUnitStrides(Scene):
         input_squares_trans = self.create_squares(3, 3, 0.5, 1, PURPLE, 3, -3)
         kernel_squares_trans = self.create_squares(3, 3, 0.7, 0.2, BLUE, 3, -1.5)
         output_squares_trans = self.create_squares(5, 5, 0.5, 1, WHITE, 0, 2.7)
-        padding_squares_trans = self.create_padding(2, 2, input_squares_trans, 0.5, 1)
+        padding_squares_trans = self.create_padding(2, 2, input_squares_trans, 0.5)
 
         # transposed input, kernel, and output groups
         input_squares_group_trans = VGroup(*input_squares_trans[0], *input_squares_trans[1], *input_squares_trans[2])
