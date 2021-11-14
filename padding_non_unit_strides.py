@@ -135,7 +135,10 @@ class PaddingNonUnitStrides(Scene):
         padding_text_trans2 = Text("p' = Kernel - 1", color=ORANGE).next_to(padding_text_trans1,DOWN*0.35).scale(0.7)
         padding_text_trans3 = Text("p' = 3 - 1 x 3 - 1", color=ORANGE).next_to(padding_text_trans1,DOWN*0.35).scale(0.7)
         padding_text_trans4 = Text("p' = 1 x 1", color=ORANGE).next_to(padding_text_trans1,DOWN*0.35).scale(0.7)
-        kernel_text_trans = Text("Kernel: 3 x 3", color=BLUE).next_to(padding_text_trans1,DOWN*0.35).scale(0.7)
+        additional_padding_text1 = Text("Add'l Padding: (Input + 2Padding - Kernel) % Stride", color=GREEN).next_to(padding_text_trans1,DOWN*0.35).scale(0.7)
+        additional_padding_text2 = Text("Add'l Padding: (3 + 2 - 3) % 2 x (4 + 2 - 3) % 2", color=GREEN).next_to(padding_text_trans1,DOWN*0.35).scale(0.7)
+        additional_padding_text3 = Text("Add'l Padding: 0 x 1", color=GREEN).next_to(padding_text_trans1,DOWN*0.35).scale(0.7)
+        kernel_text_trans = Text("Kernel: 3 x 3", color=BLUE).next_to(additional_padding1,DOWN*0.35).scale(0.7)
         stride_text_trans1 = Text("Stride: 2 x 2").next_to(kernel_text_trans,DOWN*0.35).scale(0.7)
         stride_text_trans2 = Text("s'= 1 x 1").next_to(stride_text_trans1,DOWN*0.35).scale(0.7)
         output_text_trans = Text("Output: 3 x 4").next_to(stride_text_trans1,DOWN*0.35).scale(0.7)
@@ -191,6 +194,14 @@ class PaddingNonUnitStrides(Scene):
         self.wait(0.5)
         self.play(Create(padding_squares_group_trans))
         self.play(FadeOut(padding_text_trans2))
+
+        #display additional padding
+        self.play(Write(additional_padding_text1)) 
+        self.wait(0.5) 
+        self.play(Transform(additional_padding_text1, additional_padding_text2)) 
+        self.wait(0.5)
+        self.play(Transform(additional_padding_text1, additional_padding_text3)) 
+        self.wait(0.5)
 
         # display kernel
         self.play(Write(kernel_text_trans))
