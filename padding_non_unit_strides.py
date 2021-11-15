@@ -66,7 +66,24 @@ class PaddingNonUnitStrides(Scene):
                         current_row += Square(side_length=size,color=PURPLE).next_to(current_row[j-1], RIGHT).set_opacity(0)
             total_squares += [current_row]
         return total_squares
-   
+
+    # creates additional padding
+    def create_additonal_padding(self, bottom, right, input_squares, size, start):
+        total_squares = []
+        for i in range(len(input_squares)+bottom):
+            current_row = []
+            for j in range(len(input_squares[i])+right-1):
+                if i == 0 and j == 0:
+                    current_row += Square(side_length=size).next_to(start).shift(UP*0.75, LEFT*1.5).set_opacity(0)
+                elif j == 0:
+                    current_row += Square(side_length=size).next_to(total_squares[i-1][0], DOWN).set_opacity(0)
+                elif j >= len(input_squares[i])-1 or i >= len(input_squares):
+                    current_row += Square(side_length=size,color=GREEN).next_to(current_row[j-1], RIGHT)
+                else:
+                    current_row += Square(side_length=size).next_to(current_row[j-1], RIGHT).set_opacity(0)
+            total_squares += [current_row]
+        return total_squares
+
     def construct(self):
         # regular convolution labels
         title = Text("Padding, Non-Unit Strides Convolution")
@@ -127,27 +144,32 @@ class PaddingNonUnitStrides(Scene):
         # transposed convolution labels
         title_trans = Text("Padding, Non-Unit Strides").shift(RIGHT, UP*0.5)
         title_trans1 = Text("Transposed Convolution").next_to(title_trans, DOWN)
-        input_text_trans = Text("Input: 2 x 2", color=PURPLE).shift(UP*3.1, LEFT*1.3).scale(0.7)
-        inner_padding_text1 = Text("Inner Padding: Stride - 1", color=RED).next_to(input_text_trans,DOWN*0.35).scale(0.7)
-        inner_padding_text2 = Text("Inner Padding: 2 - 1 x 2 - 1", color=RED).next_to(input_text_trans,DOWN*0.35).scale(0.7)
-        inner_padding_text3 = Text("Inner Padding: 1 x 1", color=RED).next_to(input_text_trans,DOWN*0.35).scale(0.7)
+        input_text_trans = Text("Input: 2 x 2", color=PURPLE).shift(UP*3.1, LEFT).scale(0.7)
+        inner_padding_text1 = Text("Inner: Stride - 1", color=RED).next_to(input_text_trans,DOWN*0.35).scale(0.7)
+        inner_padding_text2 = Text("Inner: 2 - 1 x 2 - 1", color=RED).next_to(input_text_trans,DOWN*0.35).scale(0.7)
+        inner_padding_text3 = Text("Inner: 1 x 1", color=RED).next_to(input_text_trans,DOWN*0.35).scale(0.7)
         padding_text_trans1 = Text("Padding: 1 x 1", color=ORANGE).next_to(inner_padding_text1,DOWN*0.35).scale(0.7)
         padding_text_trans2 = Text("p' = Kernel - 1", color=ORANGE).next_to(padding_text_trans1,DOWN*0.35).scale(0.7)
         padding_text_trans3 = Text("p' = 3 - 1 x 3 - 1", color=ORANGE).next_to(padding_text_trans1,DOWN*0.35).scale(0.7)
         padding_text_trans4 = Text("p' = 1 x 1", color=ORANGE).next_to(padding_text_trans1,DOWN*0.35).scale(0.7)
-        kernel_text_trans = Text("Kernel: 3 x 3", color=BLUE).next_to(padding_text_trans1,DOWN*0.35).scale(0.7)
+        additional_padding_text1 = Text("Add'l: (Input + 2Padding", color=GREEN).next_to(padding_text_trans1,DOWN*0.35).scale(0.7)
+        additional_padding_text2 = Text("- Kernel) % Stride", color=GREEN).next_to(additional_padding_text1,DOWN*0.35).scale(0.7).shift(RIGHT*0.5)
+        additional_padding_text3 = Text("Add'l: (3 + 2 - 3) % 2", color=GREEN).next_to(padding_text_trans1,DOWN*0.35).scale(0.7)
+        additional_padding_text4 = Text("x (4 + 2 - 3) % 2", color=GREEN).next_to(additional_padding_text1,DOWN*0.35).scale(0.7).shift(RIGHT*0.8)
+        additional_padding_text5 = Text("Add'l: 0 x 1", color=GREEN).next_to(padding_text_trans1,DOWN*0.35).scale(0.7)
+        kernel_text_trans = Text("Kernel: 3 x 3", color=BLUE).next_to(additional_padding_text1,DOWN*0.35).scale(0.7)
         stride_text_trans1 = Text("Stride: 2 x 2").next_to(kernel_text_trans,DOWN*0.35).scale(0.7)
         stride_text_trans2 = Text("s'= 1 x 1").next_to(stride_text_trans1,DOWN*0.35).scale(0.7)
         output_text_trans = Text("Output: 3 x 4").next_to(stride_text_trans1,DOWN*0.35).scale(0.7)
 
         # transposed input, kernel, and output squares
-        input_squares_trans = self.create_squares(2, 2, 0.5, 1, PURPLE, 1.8, -2.6)
-        kernel_squares_trans = self.create_squares(3, 3, 0.7, 0.2, BLUE, 2.94, -1.46)
-        output_squares_trans = self.create_squares(3, 4, 0.5, 1, WHITE, -1, 2.7)
+        input_squares_trans = self.create_squares(2, 2, 0.5, 1, PURPLE, 1.8, -3.1)
+        kernel_squares_trans = self.create_squares(3, 3, 0.7, 0.2, BLUE, 2.94, -1.96)
+        output_squares_trans = self.create_squares(3, 4, 0.5, 1, WHITE, -1.3, 2.1)
         inner_padding_squares_trans = self.create_inner_padding(1, input_squares_trans, 0.5, input_squares_trans[0][0])
         padding_squares_trans = self.create_padding(1, 1, len(input_squares_trans)+1, len(input_squares_trans[0])+1, 0.5, 
             input_squares_trans[0][0].shift(UP*0.375, LEFT*0.375))
-
+        additional_padding_squares_trans = self.create_additonal_padding(0, 1, padding_squares, 0.5, input_squares_trans[0][0])
         input_squares_trans[0][0].shift(DOWN*0.375, RIGHT*0.375)
 
         # transposed input, kernel, and output groups
@@ -158,6 +180,8 @@ class PaddingNonUnitStrides(Scene):
             *inner_padding_squares_trans[2])
         padding_squares_group_trans = VGroup(*padding_squares_trans[0], *padding_squares_trans[1], *padding_squares_trans[2],
             *padding_squares_trans[3], *padding_squares_trans[4])
+        additional_padding_squares_group_trans = VGroup(*additional_padding_squares_trans[0], *additional_padding_squares_trans[1], 
+            *additional_padding_squares_trans[2], *additional_padding_squares_trans[3], *additional_padding_squares_trans[4])
 
         #display title
         self.play(Write(title_trans), Write(title_trans1))
@@ -191,6 +215,16 @@ class PaddingNonUnitStrides(Scene):
         self.wait(0.5)
         self.play(Create(padding_squares_group_trans))
         self.play(FadeOut(padding_text_trans2))
+
+        #display additional padding
+        self.play(Write(additional_padding_text1), Write(additional_padding_text2)) 
+        self.wait(2) 
+        self.play(Transform(additional_padding_text1, additional_padding_text3), Transform(additional_padding_text2, additional_padding_text4)) 
+        self.wait(2)
+        self.play(Transform(additional_padding_text1, additional_padding_text5), FadeOut(additional_padding_text2)) 
+        self.wait(0.5)
+        self.play(Create(additional_padding_squares_group_trans))
+        self.wait()
 
         # display kernel
         self.play(Write(kernel_text_trans))
