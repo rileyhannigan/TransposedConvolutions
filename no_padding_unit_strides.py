@@ -112,7 +112,7 @@ class NoPaddingUnitStrides(Scene):
         input_text_trans = Text("Input: 3 x 3", color=YELLOW).shift(UP*3.1, LEFT*1.3).scale(0.7)
         padding_text_trans_1 = Text("Padding: 0 x 0", color=ORANGE).next_to(input_text_trans,DOWN*0.35).scale(0.7)
         padding_text_trans_2 = Text("p' = Kernel - 1", color=ORANGE).next_to(padding_text_trans_1,DOWN*0.35).scale(0.7)
-        padding_text_trans_3 = Text("p' = 3 - 1 x 3 - 1", color=ORANGE).next_to(padding_text_trans_1,DOWN*0.35).scale(0.7)
+        padding_text_trans_3 = Text("p' = (3 - 1) x (3 - 1)", color=ORANGE).next_to(padding_text_trans_1,DOWN*0.35).scale(0.7)
         padding_text_trans_4 = Text("p' = 2 x 2", color=ORANGE).next_to(padding_text_trans_1,DOWN*0.35).scale(0.7)
         kernel_text_trans = Text("Kernel: 3 x 3", color=BLUE).next_to(padding_text_trans_1,DOWN*0.35).scale(0.7)
         stride_text_trans = Text("Stride: 1 x 1", color=PURPLE).next_to(kernel_text_trans,DOWN*0.35).scale(0.7)

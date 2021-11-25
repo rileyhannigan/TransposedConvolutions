@@ -171,7 +171,7 @@ class PaddingNonUnitStrides(Scene):
         title_trans1 = Text("Transposed Convolution").next_to(title_trans, DOWN)
         input_text_trans = Text("Input: 2 x 2", color=YELLOW).shift(UP*3.1, LEFT).scale(0.7)
         inner_padding_text1 = Text("Stride Padding: Stride - 1", color=RED).next_to(input_text_trans,DOWN*0.35).scale(0.7)
-        inner_padding_text2 = Text("Stride Padding: 2 - 1 x 2 - 1", color=RED).next_to(input_text_trans,DOWN*0.35).scale(0.7)
+        inner_padding_text2 = Text("Stride Padding: (2 - 1) x (2 - 1)", color=RED).next_to(input_text_trans,DOWN*0.35).scale(0.7)
         inner_padding_text3 = Text("Stride Padding: 1 x 1", color=RED).next_to(input_text_trans,DOWN*0.35).scale(0.7)
         padding_text_trans1 = Text("Padding: 1 x 1", color=ORANGE).next_to(inner_padding_text1,DOWN*0.35).scale(0.7)
         padding_text_trans2 = Text("p' = Kernel - Padding - 1", color=ORANGE).next_to(padding_text_trans1,DOWN*0.35).scale(0.7)
