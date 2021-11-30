@@ -88,7 +88,7 @@ class NoPaddingNonUnitStrides(Scene):
 
     def construct(self):
         # regular convolution labels
-        title = Text("No Padding, Non-Unit Strides Convolution")
+        title = Text("No Padding, Strided Convolution")
         input_text = Text("Input: 4 x 4").shift(UP*3.0, LEFT*1.7).scale(0.7)
         padding_text = Text("Padding: 0 x 0", color=ORANGE).next_to(input_text,DOWN*0.35).scale(0.7)
         kernel_text = Text("Kernel: 2 x 2", color=BLUE).next_to(padding_text,DOWN*0.35).scale(0.7)
@@ -107,10 +107,12 @@ class NoPaddingNonUnitStrides(Scene):
         output_squares_group = VGroup(*output_squares[0], *output_squares[1])
         label_group = Group(input_text, padding_text, kernel_text, stride_text, output_text)
 
+        line = Rectangle(width=0.001, height=7.0).shift(LEFT*3.4)
+
         #display title
         self.play(Write(title))
         self.wait()
-        self.play(FadeOut(title))
+        self.play(ApplyMethod(title.shift, DOWN*3))
 
         # display input
         self.play(Write(input_text)) 
@@ -135,30 +137,30 @@ class NoPaddingNonUnitStrides(Scene):
         #prepare screen for transposed
         self.play(ApplyMethod(label_group.scale, 0.6), ApplyMethod(input_squares_group.scale, 0.6), 
             ApplyMethod(kernel_squares_group.scale, 0.6, {"about_point":np.array([2.4,1.85,1])}), 
-            ApplyMethod(output_squares_group.scale, 0.6))
-        self.play(ApplyMethod(label_group.shift, LEFT*3.8, UP*0.6), ApplyMethod(input_squares_group.shift, LEFT*7.9, DOWN*1.6), 
-            ApplyMethod(kernel_squares_group.shift, LEFT*7.9, DOWN*1.6), ApplyMethod(output_squares_group.shift, LEFT*3.8, DOWN*0.3))
+            ApplyMethod(output_squares_group.scale, 0.6), ApplyMethod(title.scale, 0.35))
+        self.play(ApplyMethod(label_group.shift, LEFT*3.6, UP*0.6), ApplyMethod(input_squares_group.shift, LEFT*7.7, DOWN*1.6), 
+            ApplyMethod(kernel_squares_group.shift, LEFT*7.7, DOWN*1.6), ApplyMethod(output_squares_group.shift, LEFT*3.6, DOWN*0.3),
+            ApplyMethod(title.shift, LEFT*5.2))
+        self.play(Create(line))
 
         # transposed convolution labels
-        title_trans = Text("No Padding, Non-Unit Strides").shift(RIGHT, UP*0.5)
+        title_trans = Text("No Padding, Strided").shift(RIGHT, UP*0.5)
         title_trans1 = Text("Transposed Convolution").next_to(title_trans, DOWN)
-        input_text_trans = Text("Input: 2 x 2", color=YELLOW).shift(UP*3.1, LEFT*1.3).scale(0.7)
+        input_text_trans = Text("Input: 2 x 2", color=YELLOW).shift(UP*3.1, LEFT*0.75).scale(0.7)
         inner_padding_text1 = Text("Stride Padding: Stride - 1", color=RED).next_to(input_text_trans,DOWN*0.35).scale(0.7)
-        inner_padding_text2 = Text("Stride Padding: (2 - 1) x (2 - 1)", color=RED).next_to(input_text_trans,DOWN*0.35).scale(0.7)
-        inner_padding_text3 = Text("Stride Padding: 1 x 1", color=RED).next_to(input_text_trans,DOWN*0.35).scale(0.7)
+        inner_padding_text2 = Text("Stride Padding: 1 x 1", color=RED).next_to(input_text_trans,DOWN*0.35).scale(0.7)
         padding_text_trans1 = Text("Padding: 0 x 0", color=ORANGE).next_to(inner_padding_text1,DOWN*0.35).scale(0.7)
         padding_text_trans2 = Text("p' = Kernel - 1", color=ORANGE).next_to(padding_text_trans1,DOWN*0.35).scale(0.7)
-        padding_text_trans3 = Text("p' = (2 - 1) x (2 - 1)", color=ORANGE).next_to(padding_text_trans1,DOWN*0.35).scale(0.7)
-        padding_text_trans4 = Text("p' = 1 x 1", color=ORANGE).next_to(padding_text_trans1,DOWN*0.35).scale(0.7)
+        padding_text_trans3 = Text("p' = 1 x 1", color=ORANGE).next_to(padding_text_trans1,DOWN*0.35).scale(0.7)
         kernel_text_trans = Text("Kernel: 2 x 2", color=BLUE).next_to(padding_text_trans1,DOWN*0.35).scale(0.7)
         stride_text_trans1 = Text("Stride: 2 x 2", color=PURPLE).next_to(kernel_text_trans,DOWN*0.35).scale(0.7)
         stride_text_trans2 = Text("s'= 1 x 1", color=PURPLE).next_to(stride_text_trans1,DOWN*0.35).scale(0.7)
         output_text_trans = Text("Output: 4 x 4").next_to(stride_text_trans1,DOWN*0.35).scale(0.7)
 
         # transposed input, kernel, and output squares
-        input_squares_trans = self.create_squares(2, 2, 0.5, 1, YELLOW, 1.8, -2.6)
-        kernel_squares_trans = self.create_squares(2, 2, 0.7, 0.2, BLUE, 2.94, -1.46)
-        output_squares_trans = self.create_squares(4, 4, 0.5, 1, WHITE, -0.8, 2.4)
+        input_squares_trans = self.create_squares(2, 2, 0.5, 1, YELLOW, 1.8, -3.05)
+        kernel_squares_trans = self.create_squares(2, 2, 0.7, 0.2, BLUE, 2.94, -1.91)
+        output_squares_trans = self.create_squares(4, 4, 0.5, 1, WHITE, -0.8, 1.9)
         inner_padding_squares_trans, inner_padding_zeroes_trans = self.create_inner_padding(1, input_squares_trans, 0.5, input_squares_trans[0][0])
         padding_squares_trans, padding_zeroes_trans = self.create_padding(1, 1, len(input_squares_trans) + 1, 0.5, input_squares_trans[0][0])
 
@@ -178,7 +180,8 @@ class NoPaddingNonUnitStrides(Scene):
         #display title
         self.play(Write(title_trans), Write(title_trans1))
         self.wait()
-        self.play(FadeOut(title_trans), FadeOut(title_trans1))
+        self.play(ApplyMethod(title_trans.scale, 0.7), ApplyMethod(title_trans1.scale, 0.7))
+        self.play(ApplyMethod(title_trans.shift, DOWN*2.8, RIGHT*2.8), ApplyMethod(title_trans1.shift, DOWN *2.5, RIGHT*2.8))
 
         # display input
         self.play(Write(input_text_trans)) 
@@ -188,8 +191,6 @@ class NoPaddingNonUnitStrides(Scene):
         self.play(Write(inner_padding_text1)) 
         self.wait(0.5) 
         self.play(Transform(inner_padding_text1, inner_padding_text2)) 
-        self.wait(0.5)
-        self.play(Transform(inner_padding_text1, inner_padding_text3)) 
         self.wait(0.5)
         self.play(ApplyMethod(input_squares_trans[0][0].shift, UP*0.375, LEFT*0.375), ApplyMethod(input_squares_trans[0][1].shift, UP*0.375, RIGHT*0.375),
             ApplyMethod(input_squares_trans[1][0].shift, DOWN*0.375, LEFT*0.375), ApplyMethod(input_squares_trans[1][1].shift, DOWN*0.375, RIGHT*0.375))
@@ -202,8 +203,6 @@ class NoPaddingNonUnitStrides(Scene):
         self.play(Write(padding_text_trans2))
         self.wait(0.5) 
         self.play(Transform(padding_text_trans2, padding_text_trans3)) 
-        self.wait(0.5)
-        self.play(Transform(padding_text_trans2, padding_text_trans4)) 
         self.wait(0.5)
         self.play(Create(padding_squares_group_trans), Create(padding_zeroes_group_trans))
         self.play(FadeOut(padding_text_trans2))

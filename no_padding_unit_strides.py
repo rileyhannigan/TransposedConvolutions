@@ -55,7 +55,8 @@ class NoPaddingUnitStrides(Scene):
    
     def construct(self):
         # regular convolution labels
-        title = Text("No Padding, Unit Strides Convolution")
+        title = Text("No Padding, Unit").shift(UP*0.5)
+        title2 = Text("Strides Convolution").next_to(title, DOWN)
         input_text = Text("Input: 5 x 5").shift(UP*3.0, LEFT*1.7).scale(0.7)
         padding_text = Text("Padding: 0 x 0", color=ORANGE).next_to(input_text,DOWN*0.35).scale(0.7)
         kernel_text = Text("Kernel: 3 x 3", color=BLUE).next_to(padding_text,DOWN*0.35).scale(0.7)
@@ -74,10 +75,13 @@ class NoPaddingUnitStrides(Scene):
         output_squares_group = VGroup(*output_squares[0], *output_squares[1], *output_squares[2])
         label_group = Group(input_text, padding_text, kernel_text, stride_text, output_text)
 
+        line = Rectangle(width=0.001, height=7.0).shift(LEFT*3.4)
+
         #display title
-        self.play(Write(title))
+        self.play(Write(title), Write(title2))
         self.wait()
-        self.play(FadeOut(title))
+        self.play(ApplyMethod(title.scale, 0.7), ApplyMethod(title2.scale, 0.7))
+        self.play(ApplyMethod(title.shift, DOWN*2.5, RIGHT*2.9), ApplyMethod(title2.shift, DOWN *2.2, RIGHT*2.9))
 
         # display input
         self.play(Write(input_text)) 
@@ -102,9 +106,11 @@ class NoPaddingUnitStrides(Scene):
         #prepare screen for transposed
         self.play(ApplyMethod(label_group.scale, 0.6), ApplyMethod(input_squares_group.scale, 0.6), 
             ApplyMethod(kernel_squares_group.scale, 0.6, {"about_point":np.array([2.75,1.45,1])}), 
-            ApplyMethod(output_squares_group.scale, 0.6))
-        self.play(ApplyMethod(label_group.shift, LEFT*3.5, UP*0.7), ApplyMethod(input_squares_group.shift, LEFT*8, DOWN*1.2), 
-            ApplyMethod(kernel_squares_group.shift, LEFT*8, DOWN*1.2), ApplyMethod(output_squares_group.shift, LEFT*3.5, DOWN*0.3))
+            ApplyMethod(output_squares_group.scale, 0.6), ApplyMethod(title.scale, 0.7), ApplyMethod(title2.scale, 0.7))
+        self.play(ApplyMethod(label_group.shift, LEFT*3.5, UP*0.7), ApplyMethod(input_squares_group.shift, LEFT*8, DOWN*1.1), 
+            ApplyMethod(kernel_squares_group.shift, LEFT*8, DOWN*1.1), ApplyMethod(output_squares_group.shift, LEFT*3.5, UP*0.2),
+            ApplyMethod(title.shift, LEFT*8.1, DOWN*0.5), ApplyMethod(title2.shift, LEFT*8.1, DOWN*0.35))
+        self.play(Create(line))
 
         # transposed convolution labels
         title_trans = Text("No Padding, Unit Strides").shift(RIGHT, UP*0.5)
@@ -112,8 +118,7 @@ class NoPaddingUnitStrides(Scene):
         input_text_trans = Text("Input: 3 x 3", color=YELLOW).shift(UP*3.1, LEFT*1.3).scale(0.7)
         padding_text_trans_1 = Text("Padding: 0 x 0", color=ORANGE).next_to(input_text_trans,DOWN*0.35).scale(0.7)
         padding_text_trans_2 = Text("p' = Kernel - 1", color=ORANGE).next_to(padding_text_trans_1,DOWN*0.35).scale(0.7)
-        padding_text_trans_3 = Text("p' = (3 - 1) x (3 - 1)", color=ORANGE).next_to(padding_text_trans_1,DOWN*0.35).scale(0.7)
-        padding_text_trans_4 = Text("p' = 2 x 2", color=ORANGE).next_to(padding_text_trans_1,DOWN*0.35).scale(0.7)
+        padding_text_trans_3 = Text("p' = 2 x 2", color=ORANGE).next_to(padding_text_trans_1,DOWN*0.35).scale(0.7)
         kernel_text_trans = Text("Kernel: 3 x 3", color=BLUE).next_to(padding_text_trans_1,DOWN*0.35).scale(0.7)
         stride_text_trans = Text("Stride: 1 x 1", color=PURPLE).next_to(kernel_text_trans,DOWN*0.35).scale(0.7)
         output_text_trans = Text("Output: 5 x 5").next_to(stride_text_trans,DOWN*0.35).scale(0.7)
@@ -137,7 +142,8 @@ class NoPaddingUnitStrides(Scene):
         #display title
         self.play(Write(title_trans), Write(title_trans1))
         self.wait()
-        self.play(FadeOut(title_trans), FadeOut(title_trans1))
+        self.play(ApplyMethod(title_trans.scale, 0.7), ApplyMethod(title_trans1.scale, 0.7))
+        self.play(ApplyMethod(title_trans.shift, DOWN*2.8, RIGHT*2.8), ApplyMethod(title_trans1.shift, DOWN *2.5, RIGHT*2.8))
 
         # display input
         self.play(Write(input_text_trans)) 
@@ -149,8 +155,6 @@ class NoPaddingUnitStrides(Scene):
         self.play(Write(padding_text_trans_2))
         self.wait(0.5) 
         self.play(Transform(padding_text_trans_2, padding_text_trans_3)) 
-        self.wait(0.5)
-        self.play(Transform(padding_text_trans_2, padding_text_trans_4)) 
         self.wait(0.5)
         self.play(ApplyMethod(input_squares_group_trans.shift, DOWN*0.75*2))
         self.play(Create(padding_squares_group_trans), Create(padding_zeroes_group_trans))
