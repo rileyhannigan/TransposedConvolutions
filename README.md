@@ -33,3 +33,5 @@ To render videos on your local machine Python and manim must be installed.
 # Acknowledgements
 
 [A guide to convolution arithmetic for deep learning](https://github.com/vdumoulin/conv_arithmetic) was heavilty referenced when completing these videos.
+
+The video animations were created using [the community version of Manim](https://github.com/ManimCommunity/manim).
