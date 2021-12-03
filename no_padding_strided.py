@@ -88,8 +88,8 @@ class NoPaddingStrided(Scene):
 
     def construct(self):
         # regular convolution labels
-        title = Text("No Padding,").shift(UP*0.5)
-        title2 = Text("Strided Convolution").next_to(title, DOWN)
+        title = Text("No Padding,", gradient=(BLUE, GREEN)).shift(UP*0.5)
+        title2 = Text("Strided Convolution", gradient=(BLUE, GREEN)).next_to(title, DOWN)
         input_text = Text("Input: 4 x 4").shift(UP*3.0, LEFT*1.7).scale(0.7)
         padding_text = Text("Padding: 0 x 0", color=ORANGE).next_to(input_text,DOWN*0.35).scale(0.7)
         kernel_text = Text("Kernel: 2 x 2", color=BLUE).next_to(padding_text,DOWN*0.35).scale(0.7)
@@ -141,13 +141,13 @@ class NoPaddingStrided(Scene):
             ApplyMethod(kernel_squares_group.scale, 0.6, {"about_point":np.array([2.4,1.85,1])}), 
             ApplyMethod(output_squares_group.scale, 0.6), ApplyMethod(title.scale, 0.7), ApplyMethod(title2.scale, 0.7))
         self.play(ApplyMethod(label_group.shift, LEFT*3.6, UP*0.6), ApplyMethod(input_squares_group.shift, LEFT*7.7, DOWN*1.6), 
-            ApplyMethod(kernel_squares_group.shift, LEFT*7.7, DOWN*1.6), ApplyMethod(output_squares_group.shift, LEFT*3.6, DOWN*0.3),
+            ApplyMethod(kernel_squares_group.shift, LEFT*7.71, DOWN*1.59), ApplyMethod(output_squares_group.shift, LEFT*3.6, DOWN*0.3),
             ApplyMethod(title.shift, LEFT*8, DOWN*0.85), ApplyMethod(title2.shift, LEFT*8, DOWN*0.6))
         self.play(Create(line))
 
         # transposed convolution labels
-        title_trans = Text("No Padding, Strided").shift(RIGHT, UP*0.5)
-        title_trans1 = Text("Transposed Convolution").next_to(title_trans, DOWN)
+        title_trans = Text("No Padding, Strided", gradient=(BLUE, GREEN)).shift(RIGHT, UP*0.5)
+        title_trans1 = Text("Transposed Convolution", gradient=(BLUE, GREEN)).next_to(title_trans, DOWN)
         input_text_trans = Text("Input: 2 x 2", color=YELLOW).shift(UP*3.1, LEFT*0.75).scale(0.7)
         inner_padding_text1 = Text("Stride Padding: Stride - 1", color=RED).next_to(input_text_trans,DOWN*0.35).scale(0.7)
         inner_padding_text2 = Text("Stride Padding: 1 x 1", color=RED).next_to(input_text_trans,DOWN*0.35).scale(0.7)

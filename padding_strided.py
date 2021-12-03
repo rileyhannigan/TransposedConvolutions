@@ -108,8 +108,8 @@ class PaddingStrided(Scene):
 
     def construct(self):
         # regular convolution labels
-        title = Text("Padding,").shift(UP*0.5)
-        title2 = Text("Strided Convolution").next_to(title, DOWN)
+        title = Text("Padding,", gradient=(BLUE, GREEN)).shift(UP*0.5)
+        title2 = Text("Strided Convolution", gradient=(BLUE, GREEN)).next_to(title, DOWN)
         input_text = Text("Input: 3 x 4").shift(UP*3.0, LEFT*1.7).scale(0.7)
         padding_text = Text("Padding: 1 x 1", color=ORANGE).next_to(input_text,DOWN*0.35).scale(0.7)
         kernel_text = Text("Kernel: 3 x 3", color=BLUE).next_to(padding_text,DOWN*0.35).scale(0.7)
@@ -137,7 +137,7 @@ class PaddingStrided(Scene):
 
         #display title
         self.play(Write(title), Write(title2))
-        self.wait()
+        self.wait(2)
         self.play(ApplyMethod(title.scale, 0.7), ApplyMethod(title2.scale, 0.7))
         self.play(ApplyMethod(title.shift, DOWN*2.5, RIGHT*2.9), ApplyMethod(title2.shift, DOWN *2.2, RIGHT*2.9))
 
@@ -168,14 +168,14 @@ class PaddingStrided(Scene):
             ApplyMethod(output_squares_group.scale, 0.6), ApplyMethod(padding_squares_group.scale, 0.6),
             ApplyMethod(padding_zeroes_group.scale, 0.6), ApplyMethod(title.scale, 0.7), ApplyMethod(title2.scale, 0.7))
         self.play(ApplyMethod(label_group.shift, LEFT*3.4, UP*0.7), ApplyMethod(input_squares_group.shift, LEFT*8, DOWN*0.9), 
-            ApplyMethod(kernel_squares_group.shift, LEFT*8, DOWN*0.9), ApplyMethod(output_squares_group.shift, LEFT*3.4, DOWN*0.7),
+            ApplyMethod(kernel_squares_group.shift, LEFT*8, DOWN*0.91), ApplyMethod(output_squares_group.shift, LEFT*3.4, DOWN*0.7),
             ApplyMethod(padding_squares_group.shift, LEFT*8, DOWN*0.9), ApplyMethod(padding_zeroes_group.shift, LEFT*8,DOWN*0.9),
             ApplyMethod(title.shift, LEFT*8, DOWN*0.85), ApplyMethod(title2.shift, LEFT*8, DOWN*0.6))
         self.play(Create(line))
 
         # transposed convolution labels
-        title_trans = Text("Padding, Strided").shift(RIGHT, UP*0.5)
-        title_trans1 = Text("Transposed Convolution").next_to(title_trans, DOWN)
+        title_trans = Text("Padding, Strided", gradient=(BLUE, GREEN)).shift(RIGHT, UP*0.5)
+        title_trans1 = Text("Transposed Convolution", gradient=(BLUE, GREEN)).next_to(title_trans, DOWN)
         input_text_trans = Text("Input: 2 x 2", color=YELLOW).shift(UP*3.1, LEFT*0.75).scale(0.7)
         inner_padding_text1 = Text("Stride Padding: Stride - 1", color=RED).next_to(input_text_trans,DOWN*0.35).scale(0.7)
         inner_padding_text2 = Text("Stride Padding: 1 x 1", color=RED).next_to(input_text_trans,DOWN*0.35).scale(0.7)
@@ -217,7 +217,7 @@ class PaddingStrided(Scene):
 
         #display title
         self.play(Write(title_trans), Write(title_trans1))
-        self.wait()
+        self.wait(2)
         self.play(ApplyMethod(title_trans.scale, 0.7), ApplyMethod(title_trans1.scale, 0.7))
         self.play(ApplyMethod(title_trans.shift, DOWN*2.8, RIGHT*2.8), ApplyMethod(title_trans1.shift, DOWN *2.5, RIGHT*2.8))
 
